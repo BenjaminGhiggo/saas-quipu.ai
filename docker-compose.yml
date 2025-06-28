@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: quipu_mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: quipu_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./backend/src/infrastructure/db/seeds:/docker-entrypoint-initdb.d
+    networks:
+      - quipu_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: quipu_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - quipu_network
+
+volumes:
+  mongodb_data:
+  redis_data:
+
+networks:
+  quipu_network:
+    driver: bridge

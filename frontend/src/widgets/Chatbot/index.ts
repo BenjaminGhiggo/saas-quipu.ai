@@ -1,0 +1,1 @@
+export { KappiAvatar } from './KappiAvatar';

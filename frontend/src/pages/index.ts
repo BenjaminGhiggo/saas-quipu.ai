@@ -1,0 +1,13 @@
+export { HomePage } from './HomePage';
+export { LoginPage } from './LoginPage';
+export { ChatPage } from './ChatPage';
+export { DeclaracionPage } from './DeclaracionPage';
+export { BoletasPage } from './BoletasPage';
+export { FacturasPage } from './FacturasPage';
+export { HistorialPage } from './HistorialPage';
+export { SuscripcionPage } from './SuscripcionPage';
+export { AlertasPage } from './AlertasPage';
+export { MetricsPage } from './MetricsPage';
+export { FAQPage } from './FAQPage';
+export { MenuPage } from './MenuPage';
+export { NotFoundPage } from './NotFoundPage';
