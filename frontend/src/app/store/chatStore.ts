@@ -56,48 +56,37 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     }));
 
     try {
-      // Mock API call to Kappi
-      await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
+      // Call backend chat API
+      const response = await fetch('/api/chat/message', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
+        },
+        body: JSON.stringify({ message: content }),
+      });
+
+      const result = await response.json();
       
-      // Mock Kappi responses
-      const kappiResponses: { [key: string]: string } = {
-        "¿cuánto debo declarar este mes?": "Según tus registros, debes declarar S/ 2,422.89 este mes. Esto incluye IGV por S/ 540 y renta por S/ 150.",
-        "¿qué impuestos me tocan?": "Como empresa RER, te corresponden: IGV mensual (18%), Renta mensual (1.5% de ingresos netos), y EsSalud si tienes trabajadores.",
-        "¿cuánto llevo declarando?": "Has declarado un total de S/ 15,847.32 en lo que va del año 2024.",
-        "ayuda": "¡Hola! Soy Kappi, tu asistente contable. Puedo ayudarte con declaraciones, cálculos de impuestos, dudas sobre SUNAT y más. ¿En qué te ayudo hoy?",
-      };
+      if (result.success) {
+        const kappiMessage: ChatMessage = {
+          ...result.data,
+          id: (Date.now() + 1).toString(),
+        };
 
-      const normalizedContent = content.toLowerCase().trim();
-      const response = kappiResponses[normalizedContent] || 
-                      kappiResponses["ayuda"] || 
-                      "Interesante pregunta. Basándome en tu información, te recomiendo revisar tus declaraciones anteriores. ¿Te gustaría que analice algo específico?";
-
-      const kappiMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        content: response,
-        sender: 'kappi',
-        timestamp: new Date().toISOString(),
-        type: 'text',
-        metadata: Math.random() > 0.7 ? {
-          suggestions: [
-            "¿Cuándo vence mi declaración?",
-            "¿Cómo calculo el IGV?",
-            "Ver mis métricas",
-          ],
-        } : undefined,
-      };
-
-      set(state => ({
-        currentSession: state.currentSession 
-          ? {
-              ...state.currentSession,
-              messages: [...state.currentSession.messages, kappiMessage],
-              updatedAt: new Date().toISOString(),
-            }
-          : null,
-        isTyping: false,
-      }));
-
+        set(state => ({
+          currentSession: state.currentSession 
+            ? {
+                ...state.currentSession,
+                messages: [...state.currentSession.messages, kappiMessage],
+                updatedAt: new Date().toISOString(),
+              }
+            : null,
+          isTyping: false,
+        }));
+      } else {
+        throw new Error(result.message || 'Error en respuesta de chat');
+      }
     } catch (error) {
       const errorMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
