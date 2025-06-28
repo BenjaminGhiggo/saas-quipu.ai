@@ -17,12 +17,12 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000,
-    host: true,
+    port: 5000,
+    host: '0.0.0.0', // Permite conexiones externas
     allowedHosts: 'all',
     proxy: {
       '/api': {
-        target: 'http://localhost:3001',
+        target: 'http://localhost:5001',
         changeOrigin: true,
       },
     },

@@ -6,11 +6,27 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 5001;
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:3002', 'http://127.0.0.1:3002'],
+  origin: [
+    'http://localhost:5000', 
+    'http://127.0.0.1:5000', 
+    'http://localhost:3000', 
+    'http://127.0.0.1:3000', 
+    'http://localhost:3002', 
+    'http://127.0.0.1:3002',
+    // VPS URLs
+    'http://167.86.90.102:5000',
+    'http://167.86.90.102:5001',
+    'http://167.86.90.102:3000',
+    'http://167.86.90.102:3001',
+    // Ngrok URLs
+    'https://27b0-201-218-159-83.ngrok-free.app',
+    /^https:\/\/.*\.ngrok\.io$/,
+    /^https:\/\/.*\.ngrok-free\.app$/
+  ],
   credentials: true
 }));
 app.use(express.json());
