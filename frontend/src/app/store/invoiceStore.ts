@@ -18,7 +18,7 @@ interface InvoiceStore {
   setError: (error: string | null) => void;
 }
 
-export const useInvoiceStore = create<InvoiceStore>((set, get) => ({
+export const useInvoiceStore = create<InvoiceStore>((set) => ({
   invoices: [],
   loading: false,
   error: null,
@@ -129,9 +129,10 @@ export const useInvoiceStore = create<InvoiceStore>((set, get) => ({
     set({ loading: true, error: null });
     try {
       // Mock file upload and OCR processing
+      console.log('Processing file:', file.name);
       await new Promise(resolve => setTimeout(resolve, 3000));
       
-      // Mock extracted data
+      // Mock extracted data - in real app this would be added to invoices
       const extractedData = {
         type: 'boleta' as const,
         client: {
@@ -147,8 +148,9 @@ export const useInvoiceStore = create<InvoiceStore>((set, get) => ({
         confidence: 85,
       };
       
+      // In real app, would add to invoices list
+      console.log('Extracted data:', extractedData);
       set({ loading: false });
-      return extractedData;
     } catch (error) {
       set({ error: 'Error uploading invoice', loading: false });
       throw error;

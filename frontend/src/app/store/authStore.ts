@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { AuthState, User, LoginFormData, SunatLoginFormData, RegisterFormData } from '@/shared/types';
+import { AuthState, User, RegisterFormData } from '@/shared/types';
 import { authApi } from '@/shared/lib/api/authApi';
 
 interface AuthStore extends AuthState {

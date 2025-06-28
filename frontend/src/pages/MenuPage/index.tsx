@@ -97,7 +97,7 @@ export const MenuPage: React.FC = () => {
 
         {/* Subscription Badge */}
         <div className="mt-4 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-700">
-          Plan {user?.subscription?.planType?.charAt(0)?.toUpperCase() + user?.subscription?.planType?.slice(1) || 'Emprende'}
+          Plan {user?.subscription?.planType ? user.subscription.planType.charAt(0).toUpperCase() + user.subscription.planType.slice(1) : 'Emprende'}
         </div>
       </div>
 

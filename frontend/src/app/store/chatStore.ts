@@ -60,7 +60,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
       
       // Mock Kappi responses
-      const kappiResponses = {
+      const kappiResponses: { [key: string]: string } = {
         "¿cuánto debo declarar este mes?": "Según tus registros, debes declarar S/ 2,422.89 este mes. Esto incluye IGV por S/ 540 y renta por S/ 150.",
         "¿qué impuestos me tocan?": "Como empresa RER, te corresponden: IGV mensual (18%), Renta mensual (1.5% de ingresos netos), y EsSalud si tienes trabajadores.",
         "¿cuánto llevo declarando?": "Has declarado un total de S/ 15,847.32 en lo que va del año 2024.",

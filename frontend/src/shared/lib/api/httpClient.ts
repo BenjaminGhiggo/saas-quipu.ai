@@ -1,9 +1,9 @@
-import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
+import axios from 'axios';
 
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 class HttpClient {
-  private client: AxiosInstance;
+  private client: any;
 
   constructor() {
     this.client = axios.create({
@@ -20,7 +20,7 @@ class HttpClient {
   private setupInterceptors() {
     // Request interceptor
     this.client.interceptors.request.use(
-      (config) => {
+      (config: any) => {
         // Add auth token if available
         const token = this.getStoredToken();
         if (token) {
@@ -32,14 +32,14 @@ class HttpClient {
         
         return config;
       },
-      (error) => {
+      (error: any) => {
         return Promise.reject(error);
       }
     );
 
     // Response interceptor
     this.client.interceptors.response.use(
-      (response: AxiosResponse) => {
+      (response: any) => {
         // Log response time in development
         if (import.meta.env.DEV) {
           const endTime = new Date();
@@ -52,7 +52,7 @@ class HttpClient {
 
         return response;
       },
-      (error: AxiosError) => {
+      (error: any) => {
         // Handle common error scenarios
         if (error.response?.status === 401) {
           // Token expired or invalid
@@ -98,32 +98,32 @@ class HttpClient {
   }
 
   // HTTP Methods
-  async get<T = any>(url: string, config?: any): Promise<AxiosResponse<T>> {
+  async get(url: string, config?: any): Promise<any> {
     return this.client.get(url, config);
   }
 
-  async post<T = any>(url: string, data?: any, config?: any): Promise<AxiosResponse<T>> {
+  async post(url: string, data?: any, config?: any): Promise<any> {
     return this.client.post(url, data, config);
   }
 
-  async put<T = any>(url: string, data?: any, config?: any): Promise<AxiosResponse<T>> {
+  async put(url: string, data?: any, config?: any): Promise<any> {
     return this.client.put(url, data, config);
   }
 
-  async patch<T = any>(url: string, data?: any, config?: any): Promise<AxiosResponse<T>> {
+  async patch(url: string, data?: any, config?: any): Promise<any> {
     return this.client.patch(url, data, config);
   }
 
-  async delete<T = any>(url: string, config?: any): Promise<AxiosResponse<T>> {
+  async delete(url: string, config?: any): Promise<any> {
     return this.client.delete(url, config);
   }
 
   // Upload file with progress
-  async upload<T = any>(
+  async upload(
     url: string, 
     file: File, 
     onProgress?: (progressEvent: any) => void
-  ): Promise<AxiosResponse<T>> {
+  ): Promise<any> {
     const formData = new FormData();
     formData.append('file', file);
 

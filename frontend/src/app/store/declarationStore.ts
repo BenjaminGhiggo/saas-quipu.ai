@@ -20,7 +20,7 @@ interface DeclarationStore {
   setError: (error: string | null) => void;
 }
 
-export const useDeclarationStore = create<DeclarationStore>((set, get) => ({
+export const useDeclarationStore = create<DeclarationStore>((set) => ({
   declarations: [],
   currentDeclaration: null,
   loading: false,
@@ -80,7 +80,7 @@ export const useDeclarationStore = create<DeclarationStore>((set, get) => ({
             status: 'draft',
             formType: 'PDT621',
           },
-          status: 'calculated',
+          status: 'calculated' as const,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         },
@@ -163,8 +163,8 @@ export const useDeclarationStore = create<DeclarationStore>((set, get) => ({
           igv: { collected: 900, paid: 360, balance: 540 },
           rent: { base: 5000, rate: 1.5, amount: 75, withheld: 0, balance: 75 },
         },
-        payment: { totalToPay: 615, method: 'online' },
-        status: 'calculated',
+        payment: { totalToPay: 615, method: 'online' as const },
+        status: 'calculated' as const,
       };
       
       set(state => ({
@@ -191,11 +191,12 @@ export const useDeclarationStore = create<DeclarationStore>((set, get) => ({
       
       const submitData = {
         sunat: {
-          status: 'submitted',
+          status: 'submitted' as const,
+          formType: 'PDT621',
           submittedAt: new Date().toISOString(),
           presentationNumber: `PDT${Date.now()}`,
         },
-        status: 'submitted',
+        status: 'submitted' as const,
       };
       
       set(state => ({
@@ -226,7 +227,7 @@ export const useDeclarationStore = create<DeclarationStore>((set, get) => ({
           paidAt: new Date().toISOString(),
           reference: `PAY${Date.now()}`,
         },
-        status: 'paid',
+        status: 'paid' as const,
       };
       
       set(state => ({

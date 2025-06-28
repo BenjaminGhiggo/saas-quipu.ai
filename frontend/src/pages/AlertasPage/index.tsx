@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bell, Calendar, AlertTriangle, CheckCircle, Clock } from 'lucide-react';
+import { Bell, Calendar, AlertTriangle, CheckCircle } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
 
 export const AlertasPage: React.FC = () => {
