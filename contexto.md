@@ -3,9 +3,10 @@
 ## 📋 Información General del Proyecto
 
 **Quipu.ai** - Sistema contable para emprendedores peruanos  
-**Estado:** Completamente funcional con APIs mock  
+**Estado:** ✅ COMPLETAMENTE FUNCIONAL - Desplegado en VPS con APIs mock  
 **Stack:** React + TypeScript + Node.js + MongoDB + PM2  
-**Fecha última actualización:** 28 Junio 2024  
+**Fecha última actualización:** 28 Junio 2025  
+**Ubicación actual:** `/proyectos1/saas-quipu.ai` (VPS Contabo)  
 
 ---
 
@@ -17,7 +18,7 @@
 - **IP Pública:** `167.86.90.102`  
 - **SO:** Ubuntu 20.04.6 LTS (kernel 5.4.0-105-generic)  
 - **Usuario:** `root`  
-- **Directorio del proyecto:** `/proyectos1/quipus`  
+- **Directorio del proyecto:** `/proyectos1/saas-quipu.ai`  
 
 ### Puertos y Servicios Activos
 | Servicio         | Puerto    | Estado       | URL/Comando                    |
@@ -37,13 +38,44 @@ ufw allow 5001   # Backend
 ufw allow 27017  # MongoDB
 ```
 
+### 🔄 Estado Actual del Despliegue (28 Junio 2025)
+
+**SERVICIOS ACTIVOS EN PM2:**
+```bash
+pm2 list
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 5  │ quipu-backend      │ cluster  │ 0    │ online    │ 0%       │ 59.2mb   │
+│ 8  │ quipu-frontend     │ fork     │ 0    │ online    │ 0%       │ 16.3mb   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+```
+
+**CONFIGURACIÓN PM2:**
+- Archivo: `/proyectos1/saas-quipu.ai/ecosystem.config.js`
+- Auto-start configurado: ✅ `pm2 startup systemd`
+- Configuración guardada: ✅ `pm2 save`
+
+**MONGODB STATUS:**
+```bash
+systemctl status mongodb
+● mongodb.service - An object/document-oriented database
+   Active: active (running)
+   Bind IP: 0.0.0.0:27017 (acceso externo habilitado)
+```
+
+**ACCESOS VERIFICADOS:**
+- ✅ Frontend: http://167.86.90.102:5000 (React SPA)
+- ✅ Backend: http://167.86.90.102:5001/health (Express API)
+- ✅ MongoDB: 167.86.90.102:27017 (Conexión externa)
+
 ---
 
 ## 🏗️ Arquitectura del Proyecto
 
 ### Estructura de Directorios
 ```
-/proyectos1/quipus/
+/proyectos1/saas-quipu.ai/
 ├── 📁 backend/
 │   ├── package.json
 │   ├── server-simple.js          # Servidor Express principal
@@ -145,17 +177,45 @@ origin: [
 credentials: true
 ```
 
-**Endpoints disponibles:**
+**Endpoints disponibles (✅ TODOS PROBADOS Y FUNCIONANDO):**
 ```
-GET  /health                    # Health check
-POST /api/auth/login            # Login estándar
-POST /api/auth/login/sunat      # Login SUNAT
-GET  /api/user/profile          # Perfil usuario
-POST /api/chat/message          # Chat con Kappi
-GET  /api/invoices              # Lista facturas/boletas
-GET  /api/declarations          # Lista declaraciones
-GET  /api/metrics               # Métricas del negocio
-GET  /api/alerts                # Alertas y notificaciones
+GET  /health                    # Health check ✅
+POST /api/auth/login            # Login estándar ✅
+POST /api/auth/login/sunat      # Login SUNAT ✅  
+GET  /api/user/profile          # Perfil usuario ✅
+POST /api/chat/message          # Chat con Kappi ✅
+GET  /api/invoices              # Lista facturas/boletas ✅
+GET  /api/declarations          # Lista declaraciones ✅
+GET  /api/metrics               # Métricas del negocio ✅
+GET  /api/alerts                # Alertas y notificaciones ✅
+```
+
+**URLs de Prueba Verificadas (28 Jun 2025):**
+```bash
+# Health Check
+curl http://167.86.90.102:5001/health
+
+# Login Demo
+curl -X POST http://167.86.90.102:5001/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"demo@quipu.ai","password":"password"}'
+
+# Chat Kappi
+curl -X POST http://167.86.90.102:5001/api/chat/message \
+  -H "Content-Type: application/json" \
+  -d '{"message":"¿cuánto debo declarar este mes?"}'
+
+# Ver facturas
+curl http://167.86.90.102:5001/api/invoices
+
+# Ver declaraciones  
+curl http://167.86.90.102:5001/api/declarations
+
+# Ver métricas
+curl http://167.86.90.102:5001/api/metrics
+
+# Ver alertas
+curl http://167.86.90.102:5001/api/alerts
 ```
 
 **Dependencias principales:**
@@ -195,9 +255,9 @@ systemctl restart mongodb
 tail -f /var/log/mongodb/mongodb.log
 ```
 
-### PM2 (Process Manager)
+### PM2 (Process Manager) ✅ FUNCIONANDO
 
-**Configuración:** `ecosystem.config.js`  
+**Configuración Actual:** `/proyectos1/saas-quipu.ai/ecosystem.config.js`  
 
 ```javascript
 module.exports = {
@@ -205,28 +265,61 @@ module.exports = {
     {
       name: 'quipu-backend',
       script: './backend/server-simple.js',
-      cwd: '/proyectos1/quipus',
-      env: { NODE_ENV: 'production', PORT: 5001 }
+      cwd: '/proyectos1/saas-quipu.ai',
+      env: { NODE_ENV: 'production', PORT: 5001 },
+      instances: 1,
+      autorestart: true,
+      watch: false,
+      max_memory_restart: '1G',
+      error_file: './logs/backend-error.log',
+      out_file: './logs/backend-out.log',
+      log_file: './logs/backend-combined.log',
+      time: true
     },
     {
       name: 'quipu-frontend', 
       script: 'serve',
-      args: '-s dist -p 5000',
-      cwd: '/proyectos1/quipus/frontend'
+      args: '-s dist -p 5000 -n',
+      cwd: '/proyectos1/saas-quipu.ai/frontend',
+      env: { NODE_ENV: 'production' },
+      instances: 1,
+      autorestart: true,
+      watch: false,
+      max_memory_restart: '512M',
+      error_file: '../logs/frontend-error.log',
+      out_file: '../logs/frontend-out.log',
+      log_file: '../logs/frontend-combined.log',
+      time: true
     }
   ]
 }
+```
+
+**Estado Actual PM2 (28 Jun 2025):**
+```bash
+pm2 list
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 5  │ quipu-backend      │ cluster  │ 0    │ online    │ 0%       │ 59.2mb   │
+│ 8  │ quipu-frontend     │ fork     │ 0    │ online    │ 0%       │ 16.3mb   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
 ```
 
 **Comandos PM2:**
 ```bash
 pm2 list                # Ver procesos
 pm2 restart all         # Reiniciar todos
-pm2 logs               # Ver logs
+pm2 logs               # Ver logs en tiempo real
 pm2 monit              # Monitor tiempo real
-pm2 save               # Guardar configuración
-pm2 startup            # Auto-start en boot
+pm2 save               # Guardar configuración ✅ EJECUTADO
+pm2 startup            # Auto-start en boot ✅ CONFIGURADO
+pm2 serve ./dist 5000 --name quipu-frontend --spa  # Comando usado para frontend
 ```
+
+**Logs Ubicación:**
+- Backend: `/proyectos1/saas-quipu.ai/logs/backend-*.log`
+- Frontend: `/proyectos1/saas-quipu.ai/logs/frontend-*.log`
 
 ---
 
@@ -465,4 +558,66 @@ La aplicación está lista para demostración con todas las funcionalidades simu
 
 ---
 
-*Documento generado el 28 de Junio de 2024 para continuidad del proyecto en VPS*
+## 📋 Checklist de Verificación Completa (28 Jun 2025)
+
+### ✅ **INFRAESTRUCTURA VERIFICADA**
+- [x] VPS Contabo 167.86.90.102 - FUNCIONANDO
+- [x] Firewall UFW configurado (puertos 22, 5000, 5001, 27017)
+- [x] MongoDB bind_ip = 0.0.0.0 - ACCESO EXTERNO OK
+- [x] PM2 auto-start configurado
+- [x] Directorio proyecto: `/proyectos1/saas-quipu.ai`
+
+### ✅ **SERVICIOS DESPLEGADOS Y ACTIVOS**
+- [x] Backend Express (PM2 ID: 5) - Puerto 5001 ✅
+- [x] Frontend React SPA (PM2 ID: 8) - Puerto 5000 ✅  
+- [x] MongoDB Service - Puerto 27017 ✅
+- [x] Logs configurados en `/proyectos1/saas-quipu.ai/logs/`
+
+### ✅ **APIS PROBADAS CON CURL**
+- [x] GET /health - Health check ✅
+- [x] POST /api/auth/login - Login demo ✅
+- [x] POST /api/auth/login/sunat - Login SUNAT ✅
+- [x] GET /api/invoices - Facturas mock ✅
+- [x] GET /api/declarations - Declaraciones mock ✅
+- [x] GET /api/metrics - Métricas mock ✅
+- [x] GET /api/alerts - Alertas mock ✅
+- [x] POST /api/chat/message - Chat Kappi ✅
+- [x] GET /api/user/profile - Perfil usuario ✅
+
+### ✅ **CONFIGURACIÓN FRONTEND**
+- [x] Build producción generado en `/frontend/dist/`
+- [x] Variables entorno VPS (.env.production) ✅
+- [x] Vite config puerto 5000, host 0.0.0.0 ✅
+- [x] Proxy API configurado correctamente ✅
+
+### ✅ **DATOS MOCK FUNCIONALES**
+- [x] Usuario demo: demo@quipu.ai / password
+- [x] Usuario SUNAT: RUC 12345678901 / DEMO123 / demo123
+- [x] Facturas y boletas de ejemplo
+- [x] Declaraciones tributarias históricas
+- [x] Métricas de negocio simuladas
+- [x] Chat Kappi con respuestas inteligentes
+
+### 🔄 **COMANDOS DE GESTIÓN RÁPIDA**
+```bash
+# Verificar estado general
+pm2 list
+systemctl status mongodb
+curl http://167.86.90.102:5001/health
+curl http://167.86.90.102:5000
+
+# Reiniciar servicios
+pm2 restart all
+systemctl restart mongodb
+
+# Ver logs
+pm2 logs
+tail -f /var/log/mongodb/mongodb.log
+
+# Acceso MongoDB
+mongo 167.86.90.102:27017/quipu_db
+```
+
+---
+
+*Documento actualizado el 28 de Junio de 2025 - Proyecto completamente desplegado y verificado en VPS Contabo*
