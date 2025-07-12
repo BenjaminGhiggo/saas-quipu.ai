@@ -133,7 +133,7 @@
             };
 
             try {
-                const response = await fetch('http://167.86.90.102:5001/api/invoices', {
+                const response = await fetch('http://167.86.90.102:7000/api/invoices', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -198,7 +198,7 @@ Mensaje: ${result.message}`, 'success');
             log('form-result', 'Creando comprobante...');
 
             try {
-                const response = await fetch('http://167.86.90.102:5001/api/invoices', {
+                const response = await fetch('http://167.86.90.102:7000/api/invoices', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

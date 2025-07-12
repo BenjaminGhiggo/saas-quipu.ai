@@ -25,9 +25,9 @@
 | ---------------- | --------- | ------------ | ------------------------------ |
 | SSH              | 22        | Activo       | `ssh root@167.86.90.102`       |
 | Frontend         | 5000      | PM2          | http://167.86.90.102:5000      |
-| Backend API      | 5001      | PM2          | http://167.86.90.102:5001/api  |
+| Backend API      | 5001      | PM2          | http://167.86.90.102:7000/api  |
 | MongoDB          | 27017     | systemd      | 167.86.90.102:27017            |
-| Health Check     | 5001      | Disponible   | http://167.86.90.102:5001/health |
+| Health Check     | 5001      | Disponible   | http://167.86.90.102:7000/health |
 
 ### Firewall (UFW) Configurado
 ```bash
@@ -66,7 +66,7 @@ systemctl status mongodb
 
 **ACCESOS VERIFICADOS:**
 - ✅ Frontend: http://167.86.90.102:5000 (React SPA)
-- ✅ Backend: http://167.86.90.102:5001/health (Express API)
+- ✅ Backend: http://167.86.90.102:7000/health (Express API)
 - ✅ MongoDB: 167.86.90.102:27017 (Conexión externa)
 
 ---
@@ -119,7 +119,7 @@ systemctl status mongodb
 
 **Variables de entorno (.env.production):**
 ```env
-VITE_API_URL=http://167.86.90.102:5001/api
+VITE_API_URL=http://167.86.90.102:7000/api
 VITE_FRONTEND_URL=http://167.86.90.102:5000
 VITE_APP_NAME=Quipu.ai
 VITE_APP_VERSION=1.0.0
@@ -133,7 +133,7 @@ server: {
   allowedHosts: 'all',
   proxy: {
     '/api': {
-      target: 'http://localhost:5001',
+      target: 'http://localhost:7000',
       changeOrigin: true,
     },
   },
@@ -167,7 +167,7 @@ origin: [
   'http://127.0.0.1:3002',
   // VPS URLs
   'http://167.86.90.102:5000',
-  'http://167.86.90.102:5001',
+  'http://167.86.90.102:7000',
   'http://167.86.90.102:3000',
   'http://167.86.90.102:3001',
   // Ngrok URLs
@@ -193,29 +193,29 @@ GET  /api/alerts                # Alertas y notificaciones ✅
 **URLs de Prueba Verificadas (28 Jun 2025):**
 ```bash
 # Health Check
-curl http://167.86.90.102:5001/health
+curl http://167.86.90.102:7000/health
 
 # Login Demo
-curl -X POST http://167.86.90.102:5001/api/auth/login \
+curl -X POST http://167.86.90.102:7000/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"demo@quipu.ai","password":"password"}'
 
 # Chat Kappi
-curl -X POST http://167.86.90.102:5001/api/chat/message \
+curl -X POST http://167.86.90.102:7000/api/chat/message \
   -H "Content-Type: application/json" \
   -d '{"message":"¿cuánto debo declarar este mes?"}'
 
 # Ver facturas
-curl http://167.86.90.102:5001/api/invoices
+curl http://167.86.90.102:7000/api/invoices
 
 # Ver declaraciones  
-curl http://167.86.90.102:5001/api/declarations
+curl http://167.86.90.102:7000/api/declarations
 
 # Ver métricas
-curl http://167.86.90.102:5001/api/metrics
+curl http://167.86.90.102:7000/api/metrics
 
 # Ver alertas
-curl http://167.86.90.102:5001/api/alerts
+curl http://167.86.90.102:7000/api/alerts
 ```
 
 **Dependencias principales:**
@@ -407,7 +407,7 @@ Prueba todos los endpoints de la API.
 ./update-vps.sh
 
 # Testing APIs
-./test-api.sh http://167.86.90.102:5001
+./test-api.sh http://167.86.90.102:7000
 ```
 
 ---
@@ -422,7 +422,7 @@ pm2 list
 
 # Ver puertos en uso
 netstat -tlnp | grep :5000
-netstat -tlnp | grep :5001  
+netstat -tlnp | grep :7000  
 netstat -tlnp | grep :27017
 
 # Ver logs
@@ -470,7 +470,7 @@ mongosh --host 167.86.90.102 --port 27017 < mongodb-setup.js
 
 # Puerto ocupado
 lsof -ti:5000 | xargs kill -9
-lsof -ti:5001 | xargs kill -9
+lsof -ti:7000 | xargs kill -9
 ```
 
 ### Errores de MongoDB
@@ -500,24 +500,24 @@ pm2 logs --error
 
 ### URLs Principales
 - **Aplicación:** http://167.86.90.102:5000
-- **API Base:** http://167.86.90.102:5001/api  
-- **Health Check:** http://167.86.90.102:5001/health
+- **API Base:** http://167.86.90.102:7000/api  
+- **Health Check:** http://167.86.90.102:7000/health
 
 ### Endpoints API Detallados
 ```
 # Autenticación
-POST http://167.86.90.102:5001/api/auth/login
-POST http://167.86.90.102:5001/api/auth/login/sunat
+POST http://167.86.90.102:7000/api/auth/login
+POST http://167.86.90.102:7000/api/auth/login/sunat
 
 # Datos
-GET http://167.86.90.102:5001/api/user/profile
-GET http://167.86.90.102:5001/api/invoices
-GET http://167.86.90.102:5001/api/declarations  
-GET http://167.86.90.102:5001/api/metrics
-GET http://167.86.90.102:5001/api/alerts
+GET http://167.86.90.102:7000/api/user/profile
+GET http://167.86.90.102:7000/api/invoices
+GET http://167.86.90.102:7000/api/declarations  
+GET http://167.86.90.102:7000/api/metrics
+GET http://167.86.90.102:7000/api/alerts
 
 # Chat
-POST http://167.86.90.102:5001/api/chat/message
+POST http://167.86.90.102:7000/api/chat/message
 ```
 
 ---
@@ -603,7 +603,7 @@ La aplicación está lista para demostración con todas las funcionalidades simu
 # Verificar estado general
 pm2 list
 systemctl status mongodb
-curl http://167.86.90.102:5001/health
+curl http://167.86.90.102:7000/health
 curl http://167.86.90.102:5000
 
 # Reiniciar servicios

@@ -63,7 +63,7 @@
             log('env-result', 'Verificando variables de entorno...');
             
             // Simular cómo Vite maneja las variables
-            const apiUrl = 'http://167.86.90.102:5001/api'; // Variable hardcoded para test
+            const apiUrl = 'http://167.86.90.102:7000/api'; // Variable hardcoded para test
             const frontendUrl = 'http://167.86.90.102:5000';
             
             const result = `
@@ -83,7 +83,7 @@ Nota: En build de producción, las variables se compilan estáticamente.
             log('backend-result', 'Probando backend directo en puerto 5001...');
             
             try {
-                const response = await fetch('http://167.86.90.102:5001/api/chat/message', {
+                const response = await fetch('http://167.86.90.102:7000/api/chat/message', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -134,7 +134,7 @@ Nota: En build de producción, las variables se compilan estáticamente.
             log('chatstore-result', 'Simulando lógica del ChatStore...');
             
             // Simular la lógica exacta del chatStore
-            const apiUrl = 'http://167.86.90.102:5001/api'; // Como debería ser
+            const apiUrl = 'http://167.86.90.102:7000/api'; // Como debería ser
             const message = 'Test ChatStore simulation';
             
             try {
@@ -174,7 +174,7 @@ Nota: En build de producción, las variables se compilan estáticamente.
             log('manual-result', 'Enviando mensaje a Kappi...');
             
             try {
-                const response = await fetch('http://167.86.90.102:5001/api/chat/message', {
+                const response = await fetch('http://167.86.90.102:7000/api/chat/message', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

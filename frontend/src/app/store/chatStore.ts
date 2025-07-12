@@ -57,7 +57,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
     try {
       // Call backend chat API
-      const apiUrl = 'http://167.86.90.102:5001/api';
+      const apiUrl = 'http://167.86.90.102:7000/api';
       const response = await fetch(`${apiUrl}/chat/message`, {
         method: 'POST',
         headers: {

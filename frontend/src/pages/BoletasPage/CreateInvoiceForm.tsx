@@ -159,7 +159,7 @@ export const CreateInvoiceForm: React.FC<CreateInvoiceFormProps> = ({ onBack, on
     setLoading(true);
     
     try {
-      const response = await fetch('http://167.86.90.102:5001/api/invoices', {
+      const response = await fetch('http://167.86.90.102:7000/api/invoices', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -180,7 +180,7 @@ export const CreateInvoiceForm: React.FC<CreateInvoiceFormProps> = ({ onBack, on
         // If creating and sending, also generate PDF
         if (action === 'send') {
           try {
-            const pdfResponse = await fetch(`http://167.86.90.102:5001/api/invoices/${result.data._id}/pdf`, {
+            const pdfResponse = await fetch(`http://167.86.90.102:7000/api/invoices/${result.data._id}/pdf`, {
               method: 'GET',
               headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token') || ''}`

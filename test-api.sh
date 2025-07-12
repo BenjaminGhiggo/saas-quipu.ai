@@ -2,9 +2,9 @@
 
 # Script para probar todos los endpoints de la API Quipu.ai
 # Usar: ./test-api.sh [BASE_URL]
-# Ejemplo: ./test-api.sh http://167.86.90.102:5001
+# Ejemplo: ./test-api.sh http://167.86.90.102:7000
 
-BASE_URL=${1:-"http://localhost:5001"}
+BASE_URL=${1:-"http://localhost:7000"}
 echo "🧪 Probando API Quipu.ai en: $BASE_URL"
 echo "=========================================="
 
@@ -100,6 +100,6 @@ echo -e "${GREEN}🎉 API testing completed!${NC}"
 echo -e "\n${YELLOW}Next steps:${NC}"
 echo "1. Start backend: cd backend && node server-simple.js"
 echo "2. Test locally: ./test-api.sh"
-echo "3. Test on VPS: ./test-api.sh http://167.86.90.102:5001"
+echo "3. Test on VPS: ./test-api.sh http://167.86.90.102:7000"
 echo "4. Start frontend: cd frontend && npm run dev"
 echo "5. Open browser: http://167.86.90.102:5000"

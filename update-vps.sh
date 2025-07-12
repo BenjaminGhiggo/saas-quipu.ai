@@ -28,9 +28,9 @@ EOF
 
 echo "🎉 Actualización completada!"
 echo "Frontend: http://${VPS_IP}:5000"
-echo "Backend: http://${VPS_IP}:5001/api"
+echo "Backend: http://${VPS_IP}:7000/api"
 
 # Test de conectividad
 echo "🧪 Probando conectividad..."
-curl -s http://${VPS_IP}:5001/health | grep -q "ok" && echo "✅ Backend OK" || echo "❌ Backend Error"
+curl -s http://${VPS_IP}:7000/health | grep -q "ok" && echo "✅ Backend OK" || echo "❌ Backend Error"
 curl -s -I http://${VPS_IP}:5000 | grep -q "200 OK" && echo "✅ Frontend OK" || echo "❌ Frontend Error"

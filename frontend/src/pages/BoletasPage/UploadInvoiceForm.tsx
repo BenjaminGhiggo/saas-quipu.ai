@@ -89,7 +89,7 @@ export const UploadInvoiceForm: React.FC<UploadInvoiceFormProps> = ({ onBack, on
         formData.append('files', fileData.file);
       });
 
-      const response = await fetch('http://167.86.90.102:5001/api/invoices/upload', {
+      const response = await fetch('http://167.86.90.102:7000/api/invoices/upload', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
@@ -163,7 +163,7 @@ export const UploadInvoiceForm: React.FC<UploadInvoiceFormProps> = ({ onBack, on
 
     setLoading(true);
     try {
-      const response = await fetch('http://167.86.90.102:5001/api/invoices/from-upload', {
+      const response = await fetch('http://167.86.90.102:7000/api/invoices/from-upload', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

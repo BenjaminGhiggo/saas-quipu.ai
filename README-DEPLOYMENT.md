@@ -20,8 +20,8 @@
 **VPS Contabo - IP: 167.86.90.102**
 
 - **Frontend:** http://167.86.90.102:5000
-- **Backend API:** http://167.86.90.102:5001/api
-- **Health Check:** http://167.86.90.102:5001/health
+- **Backend API:** http://167.86.90.102:7000/api
+- **Health Check:** http://167.86.90.102:7000/health
 - **MongoDB:** 167.86.90.102:27017
 
 ## 🔑 Credenciales Demo
@@ -98,11 +98,11 @@ pm2 startup
 ### Test Backend
 ```bash
 # Ejecutar script de testing
-./test-api.sh http://167.86.90.102:5001
+./test-api.sh http://167.86.90.102:7000
 
 # O pruebas manuales
-curl http://167.86.90.102:5001/health
-curl http://167.86.90.102:5001/api/invoices
+curl http://167.86.90.102:7000/health
+curl http://167.86.90.102:7000/api/invoices
 ```
 
 ### Test Frontend
@@ -214,7 +214,7 @@ pm2 restart all
 ### Puerto ocupado
 ```bash
 lsof -ti:5000 | xargs kill -9
-lsof -ti:5001 | xargs kill -9
+lsof -ti:7000 | xargs kill -9
 ```
 
 ### MongoDB no conecta
@@ -239,7 +239,7 @@ pm2 restart quipu-frontend
 ```bash
 # Verificar variables de entorno
 echo $VITE_API_URL
-# Debe ser: http://167.86.90.102:5001/api
+# Debe ser: http://167.86.90.102:7000/api
 ```
 
 ## 🎉 ¡Listo!

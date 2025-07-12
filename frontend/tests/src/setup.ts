@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 
 // Mock environment variables
-vi.stubEnv('VITE_API_URL', 'http://localhost:5001/api');
+vi.stubEnv('VITE_API_URL', 'http://localhost:7000/api');
 vi.stubEnv('VITE_FRONTEND_URL', 'http://localhost:5000');
 
 // Mock IntersectionObserver

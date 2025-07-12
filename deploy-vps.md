@@ -63,8 +63,8 @@ ufw reload
 
 ### 6. URLs públicas:
 - **Frontend:** http://167.86.90.102:5000
-- **Backend API:** http://167.86.90.102:5001/api
-- **Health Check:** http://167.86.90.102:5001/health
+- **Backend API:** http://167.86.90.102:7000/api
+- **Health Check:** http://167.86.90.102:7000/health
 
 ## 🔧 Para usar con PM2 (recomendado para producción):
 
