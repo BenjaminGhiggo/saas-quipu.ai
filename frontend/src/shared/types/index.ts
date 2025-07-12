@@ -327,10 +327,13 @@ export interface RegisterFormData {
   lastName: string;
   email: string;
   password: string;
-  confirmPassword: string;
-  ruc?: string;
-  businessName?: string;
+  confirmPassword?: string;
+  ruc: string;
+  businessName: string;
   phone?: string;
+  address?: string;
+  taxRegime: 'RUS' | 'RER' | 'RG';
+  businessType: 'Servicios' | 'Comercio' | 'Manufactura' | 'Construcción' | 'Otros';
   acceptTerms: boolean;
 }
 
@@ -359,6 +362,101 @@ export interface Notification {
     label: string;
     onClick: () => void;
   };
+}
+
+// SIRE VENTAS Types
+export interface SunatCredentials {
+  ruc: string;
+  usuarioSOL: string;
+  claveSOL: string;
+  clientId?: string;
+  clientSecret?: string;
+  isConfigured: boolean;
+  lastSync?: string;
+}
+
+export interface SireAuthToken {
+  access_token: string;
+  token_type: string;
+  expires_in: number;
+  scope: string;
+  issued_at: string;
+}
+
+export interface SireTicket {
+  numTicket: string;
+  estado: 'En Proceso' | 'Terminado' | 'Error';
+  fechaCreacion: string;
+  fechaTermino?: string;
+  nombreArchivo?: string;
+  mensajeError?: string;
+}
+
+export interface SirePeriod {
+  numEjercicio: string;
+  desEstado: string;
+  lisPeriodos: Array<{
+    perTributario: string;
+    codEstado: string;
+    desEstado: string;
+  }>;
+}
+
+export interface SireProposal {
+  perTributario: string;
+  totalComprobantes: number;
+  montoTotal: number;
+  comprobantes: Array<{
+    codCar: string;
+    tipoComprobante: string;
+    serie: string;
+    numero: string;
+    fechaEmision: string;
+    documentoCliente: string;
+    nombreCliente: string;
+    baseImponible: number;
+    igv: number;
+    total: number;
+    moneda: string;
+    estado: string;
+  }>;
+}
+
+export interface SireUploadRequest {
+  filename: string;
+  filetype: string;
+  perTributario: string;
+  codOrigenEnvio: '2'; // Servicio web
+  codProceso: string;
+  codTipoCorrelativo: '01';
+  nomArchivoImportacion: string;
+  codLibro: '140000'; // RVIE
+}
+
+export interface SireProcess {
+  id: string;
+  tipo: 'propuesta' | 'reemplazo' | 'preliminar' | 'ajuste';
+  periodo: string;
+  estado: 'iniciado' | 'procesando' | 'completado' | 'error';
+  ticket?: string;
+  fechaInicio: string;
+  fechaFin?: string;
+  resultado?: any;
+  error?: string;
+}
+
+export interface SireValidationError {
+  cod: string;
+  msg: string;
+}
+
+export interface SireApiResponse<T = any> {
+  success: boolean;
+  data?: T;
+  cod?: string;
+  msg?: string;
+  errors?: SireValidationError[];
+  exc?: string;
 }
 
 // Error Types

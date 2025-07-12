@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Invoice Creation</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .container { background: #f5f5f5; padding: 20px; border-radius: 8px; }
+        .test-section { margin: 20px 0; padding: 15px; background: white; border-radius: 5px; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .result { margin-top: 10px; padding: 10px; background: #e9ecef; border-radius: 4px; white-space: pre-wrap; }
+        .error { background: #f8d7da; color: #721c24; }
+        .success { background: #d4edda; color: #155724; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        input, select, textarea { width: 200px; padding: 8px; margin: 5px; border: 1px solid #ddd; border-radius: 4px; }
+        .form-group { margin: 10px 0; }
+        label { display: inline-block; width: 150px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧾 Test Invoice Creation</h1>
+        
+        <div class="test-section">
+            <h3>1. Test Backend Endpoint</h3>
+            <button onclick="testBackendEndpoint()">Test POST /api/invoices</button>
+            <div id="backend-result" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>2. Manual Invoice Creation Form</h3>
+            <form id="invoice-form">
+                <div class="form-group">
+                    <label>Tipo:</label>
+                    <select id="type">
+                        <option value="boleta">Boleta</option>
+                        <option value="factura">Factura</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Documento:</label>
+                    <select id="documentType">
+                        <option value="DNI">DNI</option>
+                        <option value="RUC">RUC</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Número:</label>
+                    <input type="text" id="documentNumber" placeholder="12345678">
+                </div>
+                
+                <div class="form-group">
+                    <label>Nombre:</label>
+                    <input type="text" id="name" placeholder="Juan Pérez">
+                </div>
+                
+                <div class="form-group">
+                    <label>Descripción:</label>
+                    <input type="text" id="description" placeholder="Producto de prueba">
+                </div>
+                
+                <div class="form-group">
+                    <label>Cantidad:</label>
+                    <input type="number" id="quantity" value="1" min="1">
+                </div>
+                
+                <div class="form-group">
+                    <label>Precio Unit:</label>
+                    <input type="number" id="unitPrice" value="100" min="0" step="0.01">
+                </div>
+                
+                <div class="form-group">
+                    <label>Status:</label>
+                    <select id="status">
+                        <option value="draft">Borrador</option>
+                        <option value="sent">Enviado</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <button type="button" onclick="createInvoice()">Crear Comprobante</button>
+                </div>
+            </form>
+            <div id="form-result" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>3. Test Frontend Application</h3>
+            <p>Visit the actual application:</p>
+            <a href="http://167.86.90.102:5000/boletas" target="_blank" style="color: #007bff;">
+                📋 Abrir Módulo de Boletas/Facturas
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function log(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.className = `result ${type}`;
+        }
+
+        async function testBackendEndpoint() {
+            log('backend-result', 'Probando endpoint de creación de facturas...');
+            
+            const testData = {
+                type: 'boleta',
+                client: {
+                    documentType: 'DNI',
+                    documentNumber: '12345678',
+                    name: 'Juan Pérez Test',
+                    address: '',
+                    email: ''
+                },
+                items: [
+                    {
+                        description: 'Producto de prueba',
+                        quantity: 1,
+                        unitPrice: 100,
+                        total: 100
+                    }
+                ],
+                amounts: {
+                    subtotal: 100,
+                    igv: 18,
+                    total: 118
+                },
+                status: 'draft'
+            };
+
+            try {
+                const response = await fetch('http://167.86.90.102:5001/api/invoices', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer test-token'
+                    },
+                    body: JSON.stringify(testData)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    log('backend-result', `✅ Endpoint funciona!
+ID: ${result.data.id}
+Tipo: ${result.data.type}
+Serie: ${result.data.series}
+Número: ${result.data.number}
+Cliente: ${result.data.client.name}
+Total: S/ ${result.data.amounts.total}
+Status: ${result.data.status}
+Mensaje: ${result.message}`, 'success');
+                } else {
+                    log('backend-result', `❌ Error: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                log('backend-result', `❌ Error de conexión: ${error.message}`, 'error');
+            }
+        }
+
+        async function createInvoice() {
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const unitPrice = parseFloat(document.getElementById('unitPrice').value);
+            const total = quantity * unitPrice;
+            const subtotal = total;
+            const igv = subtotal * 0.18;
+            const totalWithIgv = subtotal + igv;
+
+            const invoiceData = {
+                type: document.getElementById('type').value,
+                client: {
+                    documentType: document.getElementById('documentType').value,
+                    documentNumber: document.getElementById('documentNumber').value,
+                    name: document.getElementById('name').value,
+                    address: '',
+                    email: ''
+                },
+                items: [
+                    {
+                        description: document.getElementById('description').value,
+                        quantity: quantity,
+                        unitPrice: unitPrice,
+                        total: total
+                    }
+                ],
+                amounts: {
+                    subtotal: subtotal,
+                    igv: igv,
+                    total: totalWithIgv
+                },
+                status: document.getElementById('status').value
+            };
+
+            log('form-result', 'Creando comprobante...');
+
+            try {
+                const response = await fetch('http://167.86.90.102:5001/api/invoices', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer test-token'
+                    },
+                    body: JSON.stringify(invoiceData)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    log('form-result', `✅ ${result.message}
+
+📋 Comprobante creado:
+ID: ${result.data.id}
+Tipo: ${result.data.type.toUpperCase()}
+Serie: ${result.data.series}
+Número: ${result.data.number}
+Fecha: ${result.data.date}
+
+👤 Cliente:
+${result.data.client.documentType}: ${result.data.client.documentNumber}
+Nombre: ${result.data.client.name}
+
+📦 Items:
+${result.data.items.map(item => `- ${item.description} (${item.quantity} x S/ ${item.unitPrice.toFixed(2)} = S/ ${item.total.toFixed(2)})`).join('\n')}
+
+💰 Montos:
+Subtotal: S/ ${result.data.amounts.subtotal.toFixed(2)}
+IGV (18%): S/ ${result.data.amounts.igv.toFixed(2)}
+Total: S/ ${result.data.amounts.total.toFixed(2)}
+
+📊 Estado:
+Status: ${result.data.status}
+SUNAT: ${result.data.sunatStatus}`, 'success');
+                } else {
+                    log('form-result', `❌ Error: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                log('form-result', `❌ Error de conexión: ${error.message}`, 'error');
+            }
+        }
+
+        // Auto-test on load
+        document.addEventListener('DOMContentLoaded', () => {
+            testBackendEndpoint();
+        });
+    </script>
+</body>
+</html>

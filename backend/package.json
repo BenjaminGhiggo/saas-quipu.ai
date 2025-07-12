@@ -1,24 +1,32 @@
 {
   "name": "quipu-backend",
   "version": "1.0.0",
-  "description": "Backend para Quipu.ai - Contador Virtual",
-  "main": "dist/server.js",
+  "description": "Quipu.ai Backend with MongoDB integration",
   "type": "module",
+  "main": "src/server.js",
   "scripts": {
-    "dev": "nodemon src/server.ts",
-    "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "lint": "eslint src --ext .ts",
-    "lint:fix": "eslint src --ext .ts --fix",
-    "migrate": "tsx src/infrastructure/db/migrations/index.ts",
-    "seed": "tsx src/infrastructure/db/seeds/index.ts"
+    "lint": "eslint src/",
+    "simple": "node server-simple.js"
   },
+  "keywords": [
+    "accounting",
+    "taxes",
+    "sunat",
+    "peru",
+    "ai",
+    "mongodb"
+  ],
+  "author": "Quipu.ai Team",
+  "license": "MIT",
   "dependencies": {
+    "@google/generative-ai": "^0.21.0",
     "bcryptjs": "^2.4.3",
-    "compression": "^1.7.4",
+    "compression": "^1.7.0",
     "cors": "^2.8.5",
     "date-fns": "^2.30.0",
     "dotenv": "^16.3.0",
@@ -26,44 +34,37 @@
     "express-rate-limit": "^6.10.0",
     "express-validator": "^7.0.1",
     "helmet": "^7.0.0",
+    "html-pdf-node": "^1.0.8",
     "joi": "^17.9.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^7.5.0",
+    "jspdf": "^3.0.1",
+    "mongoose": "^7.8.7",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
+    "puppeteer": "^24.12.1",
     "typescript": "^5.0.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@babel/node": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
     "@types/bcryptjs": "^2.4.0",
     "@types/compression": "^1.7.0",
     "@types/cors": "^2.8.0",
     "@types/express": "^4.17.0",
-    "@types/jest": "^29.5.0",
     "@types/jsonwebtoken": "^9.0.0",
+    "@types/mongoose": "^5.11.0",
     "@types/morgan": "^1.9.0",
     "@types/multer": "^1.4.0",
-    "@types/node": "^20.5.0",
-    "@types/supertest": "^2.0.0",
+    "@types/node": "^20.0.0",
     "@types/uuid": "^9.0.0",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "eslint": "^8.45.0",
-    "jest": "^29.6.0",
+    "eslint": "^8.50.0",
+    "jest": "^29.7.0",
+    "mongodb-memory-server": "^10.1.4",
     "nodemon": "^3.0.0",
-    "supertest": "^6.3.0",
-    "ts-jest": "^29.1.0",
-    "ts-node": "^10.9.2",
-    "tsx": "^3.12.0"
+    "supertest": "^6.3.4"
   },
-  "keywords": [
-    "contabilidad",
-    "SUNAT",
-    "Peru",
-    "IA",
-    "facturas",
-    "boletas"
-  ],
-  "author": "Quipu.ai Team",
-  "license": "MIT"
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }

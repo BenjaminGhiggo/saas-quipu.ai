@@ -1,5 +1,4 @@
 import React from 'react';
-import { Bot } from 'lucide-react';
 import { clsx } from 'clsx';
 
 interface KappiAvatarProps {
@@ -57,7 +56,11 @@ export const KappiAvatar: React.FC<KappiAvatarProps> = ({
         className
       )}
     >
-      <Bot className={clsx(iconSizes[size], 'text-orange-600')} />
+      <img 
+        src="https://cdn.jsdelivr.net/gh/BenjaminGhiggo/capibara-cdn@main/assets/capybara.svg"
+        alt="Kappi Avatar"
+        className={clsx(iconSizes[size], 'text-orange-600')}
+      />
       
       {/* Peruvian hat */}
       {showHat && (

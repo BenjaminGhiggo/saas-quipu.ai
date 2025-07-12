@@ -43,6 +43,12 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         return 'Preguntas frecuentes';
       case '/menu':
         return 'Menú';
+      case '/perfil':
+        return 'Mi Perfil';
+      case '/sunat-config':
+        return 'Configuración SUNAT';
+      case '/sire':
+        return 'SIRE VENTAS';
       default:
         return '';
     }

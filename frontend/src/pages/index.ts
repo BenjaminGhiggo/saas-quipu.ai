@@ -1,5 +1,7 @@
 export { HomePage } from './HomePage';
 export { LoginPage } from './LoginPage';
+export { RegisterPage } from './RegisterPage';
+export { ProfilePage } from './ProfilePage';
 export { ChatPage } from './ChatPage';
 export { DeclaracionPage } from './DeclaracionPage';
 export { BoletasPage } from './BoletasPage';
@@ -10,4 +12,6 @@ export { AlertasPage } from './AlertasPage';
 export { MetricsPage } from './MetricsPage';
 export { FAQPage } from './FAQPage';
 export { MenuPage } from './MenuPage';
+export { SunatConfigPage } from './SunatConfigPage';
+export { SirePage } from './SirePage';
 export { NotFoundPage } from './NotFoundPage';

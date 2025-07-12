@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Upload, Camera, Edit3, FileText } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
+import { CreateInvoiceForm } from './CreateInvoiceForm';
+import { UploadInvoiceForm } from './UploadInvoiceForm';
 
 export const BoletasPage: React.FC = () => {
   const [selectedMethod, setSelectedMethod] = useState<'upload' | 'scan' | 'manual' | null>(null);
+  const [currentView, setCurrentView] = useState<'selection' | 'create' | 'upload'>('selection');
 
   const methods = [
     {
@@ -28,6 +31,35 @@ export const BoletasPage: React.FC = () => {
       color: 'bg-orange-500',
     },
   ];
+
+  const handleBackToSelection = () => {
+    setCurrentView('selection');
+    setSelectedMethod(null);
+  };
+
+  const handleInvoiceCreated = () => {
+    setCurrentView('selection');
+    setSelectedMethod(null);
+    // TODO: Show success message or navigate to invoice list
+  };
+
+  if (currentView === 'create') {
+    return (
+      <CreateInvoiceForm
+        onBack={handleBackToSelection}
+        onSuccess={handleInvoiceCreated}
+      />
+    );
+  }
+
+  if (currentView === 'upload') {
+    return (
+      <UploadInvoiceForm
+        onBack={handleBackToSelection}
+        onSuccess={handleInvoiceCreated}
+      />
+    );
+  }
 
   return (
     <div className="p-4 space-y-6">
@@ -81,8 +113,14 @@ export const BoletasPage: React.FC = () => {
             fullWidth
             size="lg"
             onClick={() => {
-              // Navigate to specific method page
-              console.log(`Navigate to ${selectedMethod} method`);
+              if (selectedMethod === 'manual') {
+                setCurrentView('create');
+              } else if (selectedMethod === 'upload') {
+                setCurrentView('upload');
+              } else {
+                // TODO: Implement scan method
+                console.log(`Navigate to ${selectedMethod} method`);
+              }
             }}
           >
             Continuar con {methods.find(m => m.id === selectedMethod)?.title}

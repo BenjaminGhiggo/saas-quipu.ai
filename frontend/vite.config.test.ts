@@ -3,7 +3,6 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   test: {
@@ -22,28 +21,4 @@ export default defineConfig({
       "@/app": path.resolve(__dirname, "./src/app"),
     },
   },
-  server: {
-    port: 5000,
-    host: '0.0.0.0', // Permite conexiones externas
-    allowedHosts: 'all',
-    proxy: {
-      '/api': {
-        target: 'http://localhost:5001',
-        changeOrigin: true,
-      },
-    },
-  },
-  build: {
-    sourcemap: true,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          router: ['react-router-dom'],
-          ui: ['lucide-react', '@headlessui/react'],
-          charts: ['recharts'],
-        },
-      },
-    },
-  },
-})
+});

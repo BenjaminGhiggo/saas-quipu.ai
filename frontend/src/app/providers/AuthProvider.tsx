@@ -10,6 +10,7 @@ interface AuthContextType {
   loginWithSunat: (ruc: string, username: string, password: string) => Promise<void>;
   logout: () => void;
   register: (data: any) => Promise<void>;
+  updateUser: (userData: Partial<User>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -35,6 +36,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     loginWithSunat, 
     logout, 
     register,
+    updateUser,
     checkAuth
   } = useAuthStore();
 
@@ -51,6 +53,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     loginWithSunat,
     logout,
     register,
+    updateUser,
   };
 
   return (

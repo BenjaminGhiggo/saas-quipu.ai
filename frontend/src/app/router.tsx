@@ -7,6 +7,7 @@ import { AuthLayout } from '@/widgets/Layout/AuthLayout';
 // Import pages
 import { HomePage } from '@/pages/HomePage';
 import { LoginPage } from '@/pages/LoginPage';
+import { RegisterPage } from '@/pages/RegisterPage';
 import { ChatPage } from '@/pages/ChatPage';
 import { DeclaracionPage } from '@/pages/DeclaracionPage';
 import { BoletasPage } from '@/pages/BoletasPage';
@@ -17,6 +18,9 @@ import { AlertasPage } from '@/pages/AlertasPage';
 import { MetricsPage } from '@/pages/MetricsPage';
 import { FAQPage } from '@/pages/FAQPage';
 import { MenuPage } from '@/pages/MenuPage';
+import { ProfilePage } from '@/pages/ProfilePage';
+import { SunatConfigPage } from '@/pages/SunatConfigPage';
+import { SirePage } from '@/pages/SirePage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 
 // Protected Route Component
@@ -81,6 +85,17 @@ export const AppRouter: React.FC = () => {
           <PublicRoute>
             <AuthLayout>
               <LoginPage />
+            </AuthLayout>
+          </PublicRoute>
+        }
+      />
+      
+      <Route
+        path="/register"
+        element={
+          <PublicRoute>
+            <AuthLayout>
+              <RegisterPage />
             </AuthLayout>
           </PublicRoute>
         }
@@ -203,6 +218,39 @@ export const AppRouter: React.FC = () => {
           <ProtectedRoute>
             <MainLayout>
               <MenuPage />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+      
+      <Route
+        path="/perfil"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <ProfilePage />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+      
+      <Route
+        path="/sunat-config"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <SunatConfigPage />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+      
+      <Route
+        path="/sire"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <SirePage />
             </MainLayout>
           </ProtectedRoute>
         }
